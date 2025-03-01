@@ -1,12 +1,16 @@
 package com.tabertz.kata.conway;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*
  * 1. UNDERPOPULATION
@@ -26,7 +30,7 @@ public class CellTest {
     private Cell aLiveCell;
     private Cell aDeadCell;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         aLiveCell = new LiveCell();
         aDeadCell = new DeadCell();
@@ -87,9 +91,32 @@ public class CellTest {
     }
 
     @Test
-    public void testReproductionThreeLiveNeighbours() throws Exception {
+    public void testReproductionAdeadCellWithThreeLiveNeighboursWillBeAliveInNextGeneration() throws Exception {
         aDeadCell.setNeighbours(createNeighbours(5, 3));
         assertTrue(aDeadCell.willBeAliveInNextGeneration());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestDataForReproductionAdeadCellWithLiveNeighbours")
+    public void testReproductionAdeadCellWithThreLiveNeighboursFalse(int deadCellCount, int aliveCellCount,
+                                                                     boolean expectedResult)
+            throws Exception {
+        aDeadCell.setNeighbours(createNeighbours(deadCellCount, aliveCellCount));
+        assertEquals(expectedResult, aDeadCell.willBeAliveInNextGeneration());
+    }
+
+    private static Stream<Arguments> provideTestDataForReproductionAdeadCellWithLiveNeighbours() {
+        return Stream.of(
+                Arguments.of(8, 0, false),
+                Arguments.of(7, 1, false),
+                Arguments.of(6, 2, false),
+                Arguments.of(5, 3, true),
+                Arguments.of(4, 4, false),
+                Arguments.of(3, 5, false),
+                Arguments.of(2, 6, false),
+                Arguments.of(1, 7, false),
+                Arguments.of(0, 8, false)
+        );
     }
 
     private List<Cell> createNeighbours(int dead, int alive) throws Exception {
