@@ -97,15 +97,15 @@ public class CellTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideTestDataForReproductionAdeadCellWithLiveNeighbours")
-    public void testReproductionAdeadCellWithThreLiveNeighboursFalse(int deadCellCount, int aliveCellCount,
+    @MethodSource("provideTestDataForReproductionAdeadCell")
+    public void testReproductionAdeadCellWith(int deadCellCount, int aliveCellCount,
                                                                      boolean expectedResult)
             throws Exception {
         aDeadCell.setNeighbours(createNeighbours(deadCellCount, aliveCellCount));
         assertEquals(expectedResult, aDeadCell.willBeAliveInNextGeneration());
     }
 
-    private static Stream<Arguments> provideTestDataForReproductionAdeadCellWithLiveNeighbours() {
+    private static Stream<Arguments> provideTestDataForReproductionAdeadCell() {
         return Stream.of(
                 Arguments.of(8, 0, false),
                 Arguments.of(7, 1, false),
