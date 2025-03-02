@@ -98,7 +98,7 @@ public class CellTest {
 
     @ParameterizedTest
     @MethodSource("provideTestDataForReproductionAdeadCell")
-    public void testReproductionAdeadCellWith(int deadCellCount, int aliveCellCount,
+    public void testReproductionAdeadCell(int deadCellCount, int aliveCellCount,
                                                                      boolean expectedResult)
             throws Exception {
         aDeadCell.setNeighbours(createNeighbours(deadCellCount, aliveCellCount));
